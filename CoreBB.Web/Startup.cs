@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CoreBB.Web.Helpers;
 using CoreBB.Web.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -19,6 +16,8 @@ namespace CoreBB
         {
             services.AddMvc();
             services.AddDbContext<CoreBBContext>();
+            services.AddTransient<ILogin, LoginHelper>();
+            services.AddTransient<IRegister, RegistrationHelper>();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(option => {
                     option.LoginPath = "/User/LogIn";
