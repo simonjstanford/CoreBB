@@ -1,8 +1,9 @@
 ﻿using System.IO;
+using CoreBB.Web.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace CoreBB.Web.Models
+namespace CoreBB.Web.Data
 {
     public partial class CoreBBContext : DbContext
     {

@@ -1,4 +1,5 @@
-﻿using CoreBB.Web.Models;
+﻿using CoreBB.Web.Interfaces;
+using CoreBB.Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -11,11 +12,11 @@ namespace CoreBB.Web.Helpers
 {
     public class LoginHelper : ILogin
     {
-        private CoreBBContext coreBBContext;
+        private IRepository repository;
 
-        public LoginHelper(CoreBBContext coreBBContext)
+        public LoginHelper(IRepository repository)
         {
-            this.coreBBContext = coreBBContext;
+            this.repository = repository;
         }
 
         public async Task LogInUserAsync(User user, HttpContext httpContext)
@@ -28,8 +29,7 @@ namespace CoreBB.Web.Helpers
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
             await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
-            user.LastLogInDateTime = DateTime.Now;
-            await coreBBContext.SaveChangesAsync();
+            await repository.SetLastLoginTime(user, DateTime.Now);
         }
     }
 }

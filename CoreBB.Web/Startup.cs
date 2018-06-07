@@ -1,5 +1,6 @@
-﻿using CoreBB.Web.Helpers;
-using CoreBB.Web.Models;
+﻿using CoreBB.Web.Data;
+using CoreBB.Web.Helpers;
+using CoreBB.Web.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -16,6 +17,8 @@ namespace CoreBB
         {
             services.AddMvc();
             services.AddDbContext<CoreBBContext>();
+            services.AddTransient<IRepository, CoreBBRepository>();
+            services.AddTransient<IHasher, Hasher>();
             services.AddTransient<ILogin, LoginHelper>();
             services.AddTransient<IRegister, RegistrationHelper>();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

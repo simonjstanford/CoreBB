@@ -1,18 +1,19 @@
-﻿using CoreBB.Web.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using CoreBB.Web.Interfaces;
+using CoreBB.Web.Models;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CoreBB.Web.Helpers
 {
     public class RegistrationHelper : IRegister
     {
-        private CoreBBContext coreBBContext;
+        private IRepository repository;
+        private IHasher hasher;
 
-        public RegistrationHelper(CoreBBContext coreBBContext)
+        public RegistrationHelper(IRepository repository, IHasher hasher)
         {
-            this.coreBBContext = coreBBContext;
+            this.repository = repository;
+            this.hasher = hasher;
         }
 
         public async Task<User> RegisterUser(RegisterViewModel model)
@@ -39,7 +40,7 @@ namespace CoreBB.Web.Helpers
 
         private void ValidateUserNotAlreadyRegistered(RegisterViewModel model)
         {
-            var targetUser = coreBBContext.User.SingleOrDefault(u => u.Name.Equals(model.Name, StringComparison.CurrentCultureIgnoreCase));
+            var targetUser = repository.GetUserByName(model.Name);
 
             if (targetUser != null)
                 throw new Exception("User name already exists");
@@ -48,13 +49,12 @@ namespace CoreBB.Web.Helpers
         private async Task<User> CreateUser(RegisterViewModel model)
         {
             var targetUser = CreateUserInstance(model);
-            HashPassword(model, targetUser);
+            targetUser.PasswordHash = hasher.HashPassword(model.Password, targetUser);
 
-            if (coreBBContext.User.Count() == 0)
+            if (repository.UserCount == 0)
                 targetUser.IsAdministrator = true;
 
-            await coreBBContext.User.AddAsync(targetUser);
-            await coreBBContext.SaveChangesAsync();
+            await repository.AddUser(targetUser);
             return targetUser;
         }
 
@@ -68,10 +68,6 @@ namespace CoreBB.Web.Helpers
             };
         }
 
-        private static void HashPassword(RegisterViewModel model, User targetUser)
-        {
-            var hasher = new PasswordHasher<User>();
-            targetUser.PasswordHash = hasher.HashPassword(targetUser, model.Password);
-        }
+        
     }
 }

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
-using CoreBB.Web.Helpers;
+using CoreBB.Web.Interfaces;
 using CoreBB.Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreBB.Web.Controllers
@@ -14,15 +12,17 @@ namespace CoreBB.Web.Controllers
     [Authorize]
     public class UserController : Controller
     {
-        private CoreBBContext coreBBContext;
+        private IRepository repository;
         private IRegister register;
         private ILogin login;
+        private IHasher hasher;
 
-        public UserController(CoreBBContext coreBBContext, IRegister register, ILogin login)
+        public UserController(IRepository repository, IRegister register, ILogin login, IHasher hasher)
         {
-            this.coreBBContext = coreBBContext;
+            this.repository = repository;
             this.register = register;
             this.login = login;
+            this.hasher = hasher;
         }
 
         public IActionResult Index()
@@ -61,15 +61,13 @@ namespace CoreBB.Web.Controllers
             if (!ModelState.IsValid)
                 throw new Exception("Invalid user information");
 
-            var targetUser = coreBBContext.User.SingleOrDefault(u => u.Name.Equals(model.Name, StringComparison.CurrentCultureIgnoreCase));
+            var targetUser = repository.GetUserByName(model.Name);
 
             if (targetUser == null)
                 throw new Exception("User does not exist");
 
-            var hasher = new PasswordHasher<User>();
-            var result = hasher.VerifyHashedPassword(targetUser, targetUser.PasswordHash, model.Password);
-
-            if (result != PasswordVerificationResult.Success)
+            var passwordVerified = hasher.VerifyHash(targetUser, targetUser.PasswordHash, model.Password);     
+            if (passwordVerified == false)
                 throw new Exception("The password is wrong");
 
             await login.LogInUserAsync(targetUser, HttpContext);
