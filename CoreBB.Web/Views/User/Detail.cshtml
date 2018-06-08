@@ -1,0 +1,62 @@
+﻿@using CoreBB.Web.Models
+@model User
+
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<h2>User Detail</h2>
+
+<div class="container col-6 offset-3 bb-panel">
+    <div class="card border-info">
+        <div class="card-header text-white bg-info">
+            <strong>User Detail Information</strong>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <th>Property</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td><strong>ID</strong></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><strong>Name</strong></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><strong>Description</strong></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><strong>Administrator</strong></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><strong>Locked</strong></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><strong>Register Date</strong></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><strong>Last Login</strong></td>
+                    <td></td>
+                </tr>
+            </table>
+
+            <div>
+                @if (User.IsInRole(Roles.Administrator) || User.Identity.Name == Model.Name)
+                {
+                    <a class="btn-sm btn-primary" asp-action="Edit" asp-route-name="@Model.Name">Update</a>
+                }
+
+                <a class="btn-sm btn-warning" asp-action="Message" asp-controller="Create" asp-route-tousername="@Model.Name">Send Message</a>
+            </div>
+        </div>
+    </div>
+</div>
+

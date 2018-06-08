@@ -61,8 +61,7 @@ namespace CoreBB.Web.Controllers
             if (!ModelState.IsValid)
                 throw new Exception("Invalid user information");
 
-            var targetUser = repository.GetUserByName(model.Name);
-
+            var targetUser = await repository.GetUserByNameAsync(model.Name);
             if (targetUser == null)
                 throw new Exception("User does not exist");
 
@@ -80,6 +79,17 @@ namespace CoreBB.Web.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Detail(string name)
+        {
+            var user = await repository.GetUserByNameAsync(name);
+
+            if (user == null)
+                throw new Exception("User does not exist");
+
+            return View(user);
         }
     }
 }
