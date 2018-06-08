@@ -40,7 +40,7 @@ namespace CoreBB.Web.Helpers
 
         private void ValidateUserNotAlreadyRegistered(RegisterViewModel model)
         {
-            var targetUser = repository.GetUserByNameAsync(model.Name);
+            var targetUser = repository.GetUserByName(model.Name);
 
             if (targetUser != null)
                 throw new Exception("User name already exists");

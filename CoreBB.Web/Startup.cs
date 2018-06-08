@@ -36,7 +36,6 @@ namespace CoreBB
             app.UseStaticFiles();   
             app.UseAuthentication();
             app.UseMvcWithDefaultRoute();  //The default URL routing template is {controller=Home}/{action=Index}/{id?}
-            app.UseDeveloperExceptionPage();
 
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
