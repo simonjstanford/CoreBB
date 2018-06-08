@@ -24,7 +24,7 @@ namespace CoreBB.Web.Helpers
             var claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.Name, user.Name));
             if (user.IsAdministrator)
-                claims.Add(new Claim(ClaimTypes.Role, Roles.Adminstrator));
+                claims.Add(new Claim(ClaimTypes.Role, Roles.Administrator));
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);

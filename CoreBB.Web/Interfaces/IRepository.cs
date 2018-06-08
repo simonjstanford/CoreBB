@@ -7,7 +7,7 @@ namespace CoreBB.Web.Interfaces
     public interface IRepository
     {
         int UserCount { get; }
-        User GetUserByName(string name);
+        Task<User> GetUserByNameAsync(string name);
         Task AddUser(User targetUser);
         Task SetLastLoginTime(User user, DateTime now);
     }
