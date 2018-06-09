@@ -19,7 +19,7 @@ namespace CoreBB.Web.Helpers
         public async Task<User> RegisterUser(RegisterViewModel model)
         {
             TrimUserData(model);
-            ValidateUserNotAlreadyRegistered(model);
+            await ValidateUserNotAlreadyRegistered(model);
             ValidatePassword(model);
             var user = await CreateUser(model);
             return user;
@@ -38,7 +38,7 @@ namespace CoreBB.Web.Helpers
                 throw new Exception("Passwords are not identical");
         }
 
-        private async void ValidateUserNotAlreadyRegistered(RegisterViewModel model)
+        private async Task ValidateUserNotAlreadyRegistered(RegisterViewModel model)
         {
             var targetUser = await repository.GetUserByNameAsync(model.Name);
 

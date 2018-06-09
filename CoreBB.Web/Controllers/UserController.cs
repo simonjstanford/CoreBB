@@ -143,7 +143,9 @@ namespace CoreBB.Web.Controllers
 
         private void ChangeAdministratorSettings(UserEditViewModel model, User user)
         {
-            if (User.IsInRole(Roles.Administrator))
+            var currentUserName = User.Identity.Name;
+
+            if (User.IsInRole(Roles.Administrator) && currentUserName != user.Name)
             {
                 user.IsAdministrator = model.IsAdministrator;
                 user.IsLocked = model.IsLocked;
