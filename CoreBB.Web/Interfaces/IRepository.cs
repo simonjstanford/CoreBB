@@ -10,5 +10,6 @@ namespace CoreBB.Web.Interfaces
         Task<User> GetUserByNameAsync(string name);
         Task AddUser(User targetUser);
         Task SetLastLoginTime(User user, DateTime now);
+        Task SaveUserAsync(User user);
     }
 }

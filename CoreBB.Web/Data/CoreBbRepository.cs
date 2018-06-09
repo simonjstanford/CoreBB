@@ -29,6 +29,12 @@ namespace CoreBB.Web.Data
             return await context.User.SingleOrDefaultAsync(u => u.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
         }
 
+        public async Task SaveUserAsync(User user)
+        {
+            context.User.Update(user);
+            await context.SaveChangesAsync();
+        }
+
         public async Task SetLastLoginTime(User user, DateTime now)
         {
             user.LastLogInDateTime = DateTime.Now;

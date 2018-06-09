@@ -38,9 +38,9 @@ namespace CoreBB.Web.Helpers
                 throw new Exception("Passwords are not identical");
         }
 
-        private void ValidateUserNotAlreadyRegistered(RegisterViewModel model)
+        private async void ValidateUserNotAlreadyRegistered(RegisterViewModel model)
         {
-            var targetUser = repository.GetUserByNameAsync(model.Name);
+            var targetUser = await repository.GetUserByNameAsync(model.Name);
 
             if (targetUser != null)
                 throw new Exception("User name already exists");
