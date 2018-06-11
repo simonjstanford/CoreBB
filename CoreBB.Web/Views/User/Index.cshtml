@@ -1,0 +1,37 @@
+﻿@model IEnumerable<CoreBB.Web.Models.User>
+@{
+    ViewData["Title"] = "Users";
+}
+
+<div class="container bb-list">
+    <div class="card border-info">
+        <div class="card-header text-white bg-info">
+            <strong>Users </strong><span>&nbsp;-&nbsp;Total: @Model.Count()</span>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Register</th>
+                    <th>Last Login</th>
+                    <th>Administrator</th>
+                    <th>Locked</th>
+                    <th>Operation</th>
+                </tr>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.Name</td>
+                        <td>@user.RegisterDateTime.ToShortDateString()</td>
+                        <td>@user.LastLogInDateTime.ToShortDateString()</td>
+                        <td><input type="checkbox" asp-for="@user.IsAdministrator" disabled /></td>
+                        <td><input type="checkbox" asp-for="@user.IsLocked" disabled /></td>
+                        <td><a class="btn-sm btn-primary" asp-action="Detail" asp-controller="User" asp-route-name="@user.Name" >Detail</a></td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>

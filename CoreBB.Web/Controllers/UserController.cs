@@ -25,9 +25,11 @@ namespace CoreBB.Web.Controllers
             this.hasher = hasher;
         }
 
-        public IActionResult Index()
+        [HttpGet, Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var users = await repository.GetAllUsersAsync();
+            return View(users);
         }
 
         [AllowAnonymous, HttpGet]

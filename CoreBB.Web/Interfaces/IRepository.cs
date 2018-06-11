@@ -1,5 +1,6 @@
 ﻿using CoreBB.Web.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CoreBB.Web.Interfaces
@@ -11,5 +12,6 @@ namespace CoreBB.Web.Interfaces
         Task AddUser(User targetUser);
         Task SetLastLoginTime(User user, DateTime now);
         Task SaveUserAsync(User user);
+        Task<IEnumerable<User>> GetAllUsersAsync();
     }
 }

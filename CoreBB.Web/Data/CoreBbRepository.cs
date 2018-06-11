@@ -2,6 +2,7 @@
 using CoreBB.Web.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,6 +23,11 @@ namespace CoreBB.Web.Data
         {
             await context.User.AddAsync(targetUser);
             await context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        {
+            return await context.User.ToListAsync();
         }
 
         public async Task<User> GetUserByNameAsync(string name)
