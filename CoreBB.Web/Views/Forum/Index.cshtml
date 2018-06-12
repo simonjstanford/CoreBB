@@ -1,0 +1,41 @@
+﻿@model IEnumerable<CoreBB.Web.Models.Forum>
+@{
+    ViewData["Title"] = "Forums";
+}
+
+<div class="container bb-list">
+    <div class="card border-info">
+        <div class="card-header text-white bg-info">
+            <strong>Forums</strong><span> - Total: @ViewBag.ForumCount</span>
+        </div>
+        <div class="card-body">
+            <table class="table-bordered table-striped table-hover">
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Since</th>
+                    <th>Topics</th>
+                    <th>Owner</th>
+                    <th>Locked</th>
+                    <th>Operation</th>
+                </tr>
+                @foreach (var forum in Model)
+                {
+                <tr>
+                    <td><a asp-controller="Topic" asp-action="Index" asp-route-forumid="@forum.Id">@forum.Name</a></td>
+                    <td>@forum.Description</td>
+                    <td>@forum.CreateDateTime.ToShortDateString()</td>
+                    <td>@forum.Topic.Count()</td>
+                    <td><a asp-controller="User" asp-action="Detail" asp-route-name="@forum.Owner.Name">@forum.Owner.Name</a></td>
+                    <td><input type="checkbox" asp-for="@forum.IsLocked" disabled/></td>
+                    <td>
+                        <a class="btn-sm btn-primary" asp-action="Detail" asp-all-route-id="@forum.Id">Detail</a>
+                        <a class="btn-sm btn-success" asp-action="Index" asp-controller="Topic" asp-all-route-forumid="@forum.Id">Enter</a>
+                    </td>
+                </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+

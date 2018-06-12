@@ -18,6 +18,8 @@ namespace CoreBB.Web.Data
         }
 
         public int UserCount => context.User.Count();
+        public int TopicCount => context.Topic.Count();
+        public int ForumCount => context.Forum.Count();
 
         public async Task AddUser(User targetUser)
         {
@@ -45,6 +47,18 @@ namespace CoreBB.Web.Data
         {
             user.LastLogInDateTime = DateTime.Now;
             await context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Forum>> GetAllForumsAsync()
+        {
+            var forums = await context.Forum.Include(x => x.Owner).ToListAsync();
+
+            foreach (var forum in forums)
+            {
+                var TopicCount = await context.Topic.Where(x => x.ForumId == forum.Id && x.ReplyToTopicId == null).CountAsync();
+            }
+
+            return forums;
         }
     }
 }
