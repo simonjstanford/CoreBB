@@ -60,5 +60,17 @@ namespace CoreBB.Web.Data
 
             return forums;
         }
+
+        public async Task<int> GetUserId(string name)
+        {
+            var user = await context.User.SingleOrDefaultAsync(x => x.Name == name);
+            return user.Id;
+        }
+
+        public async Task AddForum(Forum forum)
+        {
+            await context.Forum.AddAsync(forum);
+            await context.SaveChangesAsync();
+        }
     }
 }

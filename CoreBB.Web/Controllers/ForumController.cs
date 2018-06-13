@@ -27,5 +27,23 @@ namespace CoreBB.Web.Controllers
             ViewBag.ForumCount = repository.ForumCount;
             return View(forums);
         }
+
+        [HttpGet, Authorize(Roles = Roles.Administrator)]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost, Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> Create(Forum forum)
+        {
+            if (ModelState.IsValid == false)
+                throw new Exception("Invalid forum information");
+
+            forum.OwnerId = await repository.GetUserId(User.Identity.Name);
+            forum.CreateDateTime = DateTime.Now;
+            await repository.AddForum(forum);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

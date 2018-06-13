@@ -17,5 +17,7 @@ namespace CoreBB.Web.Interfaces
         Task SaveUserAsync(User user);
         Task<IEnumerable<User>> GetAllUsersAsync();
         Task<IEnumerable<Forum>> GetAllForumsAsync();
+        Task<int> GetUserId(string name);
+        Task AddForum(Forum forum);
     }
 }
