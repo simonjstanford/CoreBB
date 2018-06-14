@@ -29,8 +29,8 @@
                     <td><a asp-controller="User" asp-action="Detail" asp-route-name="@forum.Owner.Name">@forum.Owner.Name</a></td>
                     <td><input type="checkbox" asp-for="@forum.IsLocked" disabled/></td>
                     <td>
-                        <a class="btn-sm btn-primary" asp-action="Detail" asp-all-route-id="@forum.Id">Detail</a>
-                        <a class="btn-sm btn-success" asp-action="Index" asp-controller="Topic" asp-all-route-forumid="@forum.Id">Enter</a>
+                        <a class="btn-sm btn-primary" asp-action="Detail" asp-route-forumid="@forum.Id">Detail</a>
+                        <a class="btn-sm btn-success" asp-action="Index" asp-controller="Topic" asp-route-forumid="@forum.Id">Enter</a>
                     </td>
                 </tr>
                 }

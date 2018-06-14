@@ -72,5 +72,13 @@ namespace CoreBB.Web.Data
             await context.Forum.AddAsync(forum);
             await context.SaveChangesAsync();
         }
+
+        public async Task<Forum> GetForumAsync(int forumId)
+        {
+            var forum = await context.Forum.Include(x => x.Owner).SingleOrDefaultAsync(x => x.Id == forumId);
+            if (forum == null)
+                throw new Exception("Forum does not exist");
+            return forum;
+        }
     }
 }

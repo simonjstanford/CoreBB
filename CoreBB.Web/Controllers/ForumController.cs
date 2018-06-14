@@ -45,5 +45,12 @@ namespace CoreBB.Web.Controllers
             await repository.AddForum(forum);
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Detail(int forumId)
+        {
+            var forum = await repository.GetForumAsync(forumId);
+            return View(forum);
+        }
     }
 }

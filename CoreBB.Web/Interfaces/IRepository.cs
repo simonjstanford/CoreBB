@@ -19,5 +19,6 @@ namespace CoreBB.Web.Interfaces
         Task<IEnumerable<Forum>> GetAllForumsAsync();
         Task<int> GetUserId(string name);
         Task AddForum(Forum forum);
+        Task<Forum> GetForumAsync(int forumId);
     }
 }
