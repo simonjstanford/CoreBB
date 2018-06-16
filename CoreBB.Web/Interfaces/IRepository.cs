@@ -20,5 +20,7 @@ namespace CoreBB.Web.Interfaces
         Task<int> GetUserId(string name);
         Task AddForum(Forum forum);
         Task<Forum> GetForumAsync(int forumId);
+        Task DeleteForumAsync(Forum forumToDelete);
+        Task SaveForumAsync(Forum forum);
     }
 }

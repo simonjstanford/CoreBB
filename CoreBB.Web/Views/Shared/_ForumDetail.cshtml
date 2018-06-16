@@ -41,14 +41,10 @@
             {
                 @if (User.IsInRole(Roles.Administrator))
                 {
-                    <input class="btn-sm btn-primary" type="button" asp-action="Edit" asp-route-id="@Model.Id" value="Update" />
-                    <input class="btn-sm btn-warning" type="button" asp-action="Delete" asp-route-id="@Model.Id" value="Delete" />
+                    <a class="btn-sm btn-primary" asp-action="Edit" asp-route-forumid="@Model.Id">Update</a>
+                    <a class="btn-sm btn-warning" asp-action="Delete" asp-route-forumid="@Model.Id">Delete</a>
                 }
-                <input class="btn-sm btn-success" type="button" asp-action="Create" asp-controller="Topic" asp-route-forumid="@Model.Id" value="Post Topic" />
-            }
-            else if ((string)ViewData["Mode"] == "ConfirmingDelete")
-            {
-                <input class="btn-sm btn-warning" type="submit" value="Confirm" />
+                <a class="btn-sm btn-success" asp-action="Create" asp-controller="Topic" asp-route-forumid="@Model.Id">Post Topic</a>
             }
         </div>
     </div>

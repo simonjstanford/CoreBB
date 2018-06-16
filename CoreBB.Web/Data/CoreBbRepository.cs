@@ -80,5 +80,17 @@ namespace CoreBB.Web.Data
                 throw new Exception("Forum does not exist");
             return forum;
         }
+
+        public async Task DeleteForumAsync(Forum forumToDelete)
+        {
+            context.Forum.Remove(forumToDelete);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task SaveForumAsync(Forum forum)
+        {
+            context.Forum.Update(forum);
+            await context.SaveChangesAsync();
+        }
     }
 }

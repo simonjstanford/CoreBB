@@ -52,5 +52,37 @@ namespace CoreBB.Web.Controllers
             var forum = await repository.GetForumAsync(forumId);
             return View(forum);
         }
+
+        [HttpGet, Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> Edit(int forumId)
+        {
+            var forum = await repository.GetForumAsync(forumId);
+            return View(forum);
+        }
+
+        [HttpPost, Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> Edit(Forum forum)
+        {
+            if (ModelState.IsValid == false)
+                throw new Exception("Invalid forum information");
+
+            await repository.SaveForumAsync(forum);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet, Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> Delete(int forumId)
+        {
+            var forum = await repository.GetForumAsync(forumId);
+            return View(forum);
+        }
+
+        [HttpPost, Authorize(Roles = Roles.Administrator)]
+        public async Task<IActionResult> Delete(Forum forum)
+        {
+            var forumToDelete = await repository.GetForumAsync(forum.Id);
+            await repository.DeleteForumAsync(forumToDelete);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
