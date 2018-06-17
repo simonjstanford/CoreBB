@@ -92,5 +92,10 @@ namespace CoreBB.Web.Data
             context.Forum.Update(forum);
             await context.SaveChangesAsync();
         }
+
+        public async Task<ICollection<Topic>> GetTopicsAsync(int forumId)
+        {
+            return await context.Topic.Include(t => t.Owner).Where(t => t.ForumId == forumId && t.ReplyToTopicId == null).ToListAsync();
+        }
     }
 }

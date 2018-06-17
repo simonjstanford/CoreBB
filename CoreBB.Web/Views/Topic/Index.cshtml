@@ -1,0 +1,40 @@
+﻿@model CoreBB.Web.Models.Forum
+@{
+    ViewData["Title"] = @Model.Name;
+}
+
+<div class="container bb-list">
+    <div class="card border-info">
+        <div class="card-header text-white bg-info">
+            <strong>@Model.Name Topics (@Model.Topic.Count())</strong>
+            @if (Model.IsLocked == false)
+            {
+                <a asp-action="Create" asp-route-forumId="@Model.Id" class="btn-sm btn-success float-right">New Topic</a>
+            }
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Posted By</th>
+                    <th>Post Time</th>
+                    <th>Locked</th>
+                    <th>Operation</th>
+                </tr>
+
+                @foreach (var topic in Model.Topic)
+                {
+                <tr>
+                    <td><strong>@topic.Id</strong></td>
+                    <td><a asp-action="Detail" asp-route-id="@topic.Id">@topic.Title</a></td>
+                    <td><a asp-action="Detail" asp-controller="User" asp-route-name="@topic.Owner.Name">@topic.Owner.Name</a></td>
+                    <td>@topic.PostDateTime.ToShortDateString()</td>
+                    <td><input type="checkbox" asp-for="@topic.IsLocked" disabled/></td>
+                    <td><a class="btn-sm btn-primary" asp-action="Detail" asp-route-id="@topic.Id">Read</a></td>
+                </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
