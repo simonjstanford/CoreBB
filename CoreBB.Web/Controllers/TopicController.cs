@@ -1,4 +1,5 @@
 ﻿using CoreBB.Web.Interfaces;
+using CoreBB.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -24,6 +25,34 @@ namespace CoreBB.Web.Controllers
             var forum = await repository.GetForumAsync(forumId);
             forum.Topic = await repository.GetTopicsAsync(forumId);
             return View(forum);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Create(int forumId)
+        {
+            var forum = await repository.GetForumAsync(forumId);
+
+            if (forum.IsLocked)
+                throw new Exception("Forum is locked");
+
+            var topic = new Topic { ForumId = forumId };
+            return View(topic);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Topic topic)
+        {
+            if (!ModelState.IsValid)
+                throw new Exception("Invalid topic information");
+
+            var user = await repository.GetUserByNameAsync(User.Identity.Name);
+            topic.OwnerId = user.Id;
+            topic.PostDateTime = DateTime.Now;
+            await repository.AddTopicAsync(topic);
+            topic.RootTopicId = topic.Id;
+            await repository.SaveTopicAsync(topic);
+
+            return RedirectToAction(nameof(Index), new { forumId = topic.ForumId });
         }
     }
 }

@@ -18,8 +18,6 @@ namespace CoreBB.Web.Data
         }
 
         public int UserCount => context.User.Count();
-        public int TopicCount => context.Topic.Count();
-        public int ForumCount => context.Forum.Count();
 
         public async Task AddUser(User targetUser)
         {
@@ -49,16 +47,18 @@ namespace CoreBB.Web.Data
             await context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Forum>> GetAllForumsAsync()
+        public async Task<List<ForumIndexViewModel>> GetAllForumsAsync()
         {
+            var result = new List<ForumIndexViewModel>();
             var forums = await context.Forum.Include(x => x.Owner).ToListAsync();
 
             foreach (var forum in forums)
             {
                 var TopicCount = await context.Topic.Where(x => x.ForumId == forum.Id && x.ReplyToTopicId == null).CountAsync();
+                result.Add(new ForumIndexViewModel { Forum = forum, TopicCount = TopicCount });
             }
 
-            return forums;
+            return result;
         }
 
         public async Task<int> GetUserId(string name)
@@ -96,6 +96,18 @@ namespace CoreBB.Web.Data
         public async Task<ICollection<Topic>> GetTopicsAsync(int forumId)
         {
             return await context.Topic.Include(t => t.Owner).Where(t => t.ForumId == forumId && t.ReplyToTopicId == null).ToListAsync();
+        }
+
+        public async Task AddTopicAsync(Topic topic)
+        {
+            context.Topic.Add(topic);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task SaveTopicAsync(Topic topic)
+        {
+            context.Topic.Update(topic);
+            await context.SaveChangesAsync();
         }
     }
 }

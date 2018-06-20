@@ -1,0 +1,26 @@
+﻿@model  CoreBB.Web.Models.Topic
+
+<div class="container col-6 offset-3 bb-panel">
+    <div class="card border-info">
+        <div class="card-header text-white bg-info">
+            <strong>@ViewData["Mode"]</strong>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" type="text" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Content"></label>
+                <textarea asp-for="Content" class="form-control" style="min-height:120px"></textarea>
+            </div>
+            <div class="form-group">
+                <span>Lock</span>
+                <input asp-for="IsLocked" type="checkbox" />
+            </div>
+        </div>
+        <div class="card-footer">
+            <input class="btn-sm btn-success" type="submit" value="@ViewData["SubmitButtonText"]" />
+        </div>
+    </div>
+</div>

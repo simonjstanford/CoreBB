@@ -8,20 +8,20 @@ namespace CoreBB.Web.Interfaces
     public interface IRepository
     {
         int UserCount { get; }
-        int TopicCount { get; }
-        int ForumCount { get; }
 
         Task<User> GetUserByNameAsync(string name);
         Task AddUser(User targetUser);
         Task SetLastLoginTime(User user, DateTime now);
         Task SaveUserAsync(User user);
         Task<IEnumerable<User>> GetAllUsersAsync();
-        Task<IEnumerable<Forum>> GetAllForumsAsync();
+        Task<List<ForumIndexViewModel>> GetAllForumsAsync();
         Task<int> GetUserId(string name);
         Task AddForum(Forum forum);
         Task<Forum> GetForumAsync(int forumId);
         Task<ICollection<Topic>> GetTopicsAsync(int forumId);
         Task DeleteForumAsync(Forum forumToDelete);
         Task SaveForumAsync(Forum forum);
+        Task AddTopicAsync(Topic topic);
+        Task SaveTopicAsync(Topic topic);
     }
 }

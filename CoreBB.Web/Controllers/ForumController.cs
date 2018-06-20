@@ -21,8 +21,6 @@ namespace CoreBB.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var forums = await repository.GetAllForumsAsync();
-            ViewBag.TopicCount = repository.TopicCount;
-            ViewBag.ForumCount = repository.ForumCount;
             return View(forums);
         }
 
