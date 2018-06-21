@@ -23,5 +23,6 @@ namespace CoreBB.Web.Interfaces
         Task SaveForumAsync(Forum forum);
         Task AddTopicAsync(Topic topic);
         Task SaveTopicAsync(Topic topic);
+        Task<Topic> GetTopicAsync(int topicId);
     }
 }

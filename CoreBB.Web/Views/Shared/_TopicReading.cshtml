@@ -1,0 +1,29 @@
+﻿@using CoreBB.Web.Models
+@model Topic
+
+<div class="container">
+    <div class="card border-info">
+        <div class="card-header">
+            <strong>@Model.Title</strong>
+            [Posted by <a asp-action="Detail" asp-controller="User" asp-route-name="@Model.Owner.Name">@Model.Owner.Name</a> at @Model.PostDateTime.ToShortDateString()]
+                       
+            @if (Model.ModifiedByUser != null) {
+                <span>[Modified by<a asp-action="Detail" asp-controller="User" asp-route-name="@Model.ModifiedByUser.Name">@Model.ModifiedByUser.Name</a> at @Model.ModifyDateTime?.ToShortDateString()]</span>
+            }
+        </div>
+        <div class="card-body">
+            <p>@Model.Content</p>
+        </div>
+        <div class="card-footer">
+            @if (Model.IsLocked == false)
+            {
+                <a asp-action="Reply" asp-controller="Topic" asp-route-toid="@Model.Id" class="btn-sm btn-success">Reply</a>
+            }
+            @if (Model.Owner.Name == User.Identity.Name || User.IsInRole(Roles.Administrator))
+            {
+                <a asp-action="Edit" asp-controller="Topic" asp-route-toid="@Model.Id" class="btn-sm btn-warning">Reply</a>
+                <a asp-action="Delete" asp-controller="Topic" asp-route-toid="@Model.Id" class="btn-sm btn-danger">Reply</a>
+            }
+        </div>
+    </div>
+</div>

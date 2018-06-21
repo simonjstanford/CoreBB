@@ -109,5 +109,16 @@ namespace CoreBB.Web.Data
             context.Topic.Update(topic);
             await context.SaveChangesAsync();
         }
+
+        public async Task<Topic> GetTopicAsync(int topicId)
+        {
+            var topic = await context.Topic.Include(x => x.Owner).Include(x => x.ModifiedByUser).FirstOrDefaultAsync(t => t.Id == topicId);
+            if (topic == null)
+                throw new Exception("Topic does not exist");
+
+            topic.InverseReplyToTopic = await context.Topic.Include(x => x.Owner).Include(x => x.ModifiedByUser).Where(t => t.RootTopicId == topicId && t.ReplyToTopicId != null).ToListAsync();
+
+            return topic;
+        }
     }
 }

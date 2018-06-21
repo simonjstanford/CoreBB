@@ -54,5 +54,12 @@ namespace CoreBB.Web.Controllers
 
             return RedirectToAction(nameof(Index), new { forumId = topic.ForumId });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Detail(int id)
+        {
+            var rootTopic = await repository.GetTopicAsync(id);
+            return View(rootTopic);
+        }
     }
 }
