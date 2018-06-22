@@ -22,15 +22,15 @@
                 @foreach (var item in Model)
                 {
                 <tr>
-                    <td><a asp-controller="Topic" asp-action="Index" asp-route-forumid="@item.Forum.Id">@item.Forum.Name</a></td>
+                    <td><a asp-controller="Topic" asp-action="Index" asp-route-id="@item.Forum.Id">@item.Forum.Name</a></td>
                     <td>@item.Forum.Description</td>
                     <td>@item.Forum.CreateDateTime.ToShortDateString()</td>
                     <td>@item.TopicCount</td>
                     <td><a asp-controller="User" asp-action="Detail" asp-route-name="@item.Forum.Owner.Name">@item.Forum.Owner.Name</a></td>
                     <td><input type="checkbox" asp-for="@item.Forum.IsLocked" disabled/></td>
                     <td>
-                        <a class="btn-sm btn-primary" asp-action="Detail" asp-route-forumid="@item.Forum.Id">Detail</a>
-                        <a class="btn-sm btn-success" asp-action="Index" asp-controller="Topic" asp-route-forumid="@item.Forum.Id">Enter</a>
+                        <a class="btn-sm btn-primary" asp-action="Detail" asp-route-id="@item.Forum.Id">Detail</a>
+                        <a class="btn-sm btn-success" asp-action="Index" asp-controller="Topic" asp-route-id="@item.Forum.Id">Enter</a>
                     </td>
                 </tr>
                 }

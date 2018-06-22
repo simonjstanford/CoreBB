@@ -9,7 +9,7 @@
             <strong>@Model.Name Topics (@Model.Topic.Count())</strong>
             @if (Model.IsLocked == false)
             {
-                <a asp-action="Create" asp-route-forumId="@Model.Id" class="btn-sm btn-success float-right">New Topic</a>
+                <a asp-action="Create" asp-route-id="@Model.Id" class="btn-sm btn-success float-right">New Topic</a>
             }
         </div>
         <div class="card-body">

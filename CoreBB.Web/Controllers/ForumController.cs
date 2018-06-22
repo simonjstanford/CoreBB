@@ -43,16 +43,16 @@ namespace CoreBB.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Detail(int forumId)
+        public async Task<IActionResult> Detail(int id)
         {
-            var forum = await repository.GetForumAsync(forumId);
+            var forum = await repository.GetForumAsync(id);
             return View(forum);
         }
 
         [HttpGet, Authorize(Roles = Roles.Administrator)]
-        public async Task<IActionResult> Edit(int forumId)
+        public async Task<IActionResult> Edit(int id)
         {
-            var forum = await repository.GetForumAsync(forumId);
+            var forum = await repository.GetForumAsync(id);
             return View(forum);
         }
 
@@ -67,9 +67,9 @@ namespace CoreBB.Web.Controllers
         }
 
         [HttpGet, Authorize(Roles = Roles.Administrator)]
-        public async Task<IActionResult> Delete(int forumId)
+        public async Task<IActionResult> Delete(int id)
         {
-            var forum = await repository.GetForumAsync(forumId);
+            var forum = await repository.GetForumAsync(id);
             return View(forum);
         }
 
