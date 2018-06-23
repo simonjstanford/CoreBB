@@ -8,5 +8,7 @@
 <h3>Replies</h3>
 @foreach (var topic in Model.InverseReplyToTopic)
 {
-    @Html.Partial("_TopicReading", topic)
+    <div class="mt-3">
+        @Html.Partial("_TopicReading", topic)
+    </div>
 }

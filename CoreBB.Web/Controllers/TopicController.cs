@@ -3,8 +3,6 @@ using CoreBB.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CoreBB.Web.Controllers
@@ -90,6 +88,32 @@ namespace CoreBB.Web.Controllers
             var user = await repository.GetUserByNameAsync(User.Identity.Name);
             topic.OwnerId = user.Id;
             topic.PostDateTime = DateTime.Now;
+            await repository.SaveTopicAsync(topic);
+            return RedirectToAction(nameof(Detail), new { id = topic.RootTopicId });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            Task<Topic> topicTask = repository.GetTopicAsync(id);
+            Task<User> userTask = repository.GetUserByNameAsync(User.Identity.Name);
+            await Task.WhenAll(new Task[] { topicTask, userTask });
+            Topic topic = topicTask.Result;
+            User user = userTask.Result;
+            if ((topic.OwnerId == user.Id) == false || User.IsInRole(Roles.Administrator) == false)
+                throw new Exception("Update topic denied");
+            return View(topic);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Topic topic)
+        {
+            if (ModelState.IsValid == false)
+                throw new Exception("Invalid topic information");
+
+            var user = await repository.GetUserByNameAsync(User.Identity.Name);
+            topic.ModifiedByUserId = user.Id;
+            topic.ModifyDateTime = DateTime.Now;
             await repository.SaveTopicAsync(topic);
             return RedirectToAction(nameof(Detail), new { id = topic.RootTopicId });
         }

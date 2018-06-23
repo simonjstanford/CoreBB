@@ -21,8 +21,8 @@
             }
             @if (Model.Owner.Name == User.Identity.Name || User.IsInRole(Roles.Administrator))
             {
-                <a asp-action="Edit" asp-controller="Topic" asp-route-toid="@Model.Id" class="btn-sm btn-warning">Reply</a>
-                <a asp-action="Delete" asp-controller="Topic" asp-route-toid="@Model.Id" class="btn-sm btn-danger">Reply</a>
+                <a asp-action="Edit" asp-controller="Topic" asp-route-id="@Model.Id" class="btn-sm btn-warning">Edit</a>
+                <a asp-action="Delete" asp-controller="Topic" asp-route-toid="@Model.Id" class="btn-sm btn-danger">Delete</a>
             }
         </div>
     </div>
