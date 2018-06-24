@@ -38,7 +38,7 @@ namespace CoreBB.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Topic topic)
+        public async Task<IActionResult> Create([Bind(include: "ForumId,Title,Content,IsLocked")] Topic topic)
         {
             if (!ModelState.IsValid)
                 throw new Exception("Invalid topic information");
@@ -95,13 +95,7 @@ namespace CoreBB.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            Task<Topic> topicTask = repository.GetTopicAsync(id);
-            Task<User> userTask = repository.GetUserByNameAsync(User.Identity.Name);
-            await Task.WhenAll(new Task[] { topicTask, userTask });
-            Topic topic = topicTask.Result;
-            User user = userTask.Result;
-            if ((topic.OwnerId == user.Id) == false || User.IsInRole(Roles.Administrator) == false)
-                throw new Exception("Update topic denied");
+            Topic topic = await GetTopicWithAccessVerification(id);
             return View(topic);
         }
 
@@ -116,6 +110,36 @@ namespace CoreBB.Web.Controllers
             topic.ModifyDateTime = DateTime.Now;
             await repository.SaveTopicAsync(topic);
             return RedirectToAction(nameof(Detail), new { id = topic.RootTopicId });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            Topic topic = await GetTopicWithAccessVerification(id);
+            return View(topic);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Topic topic)
+        {
+            if (ModelState.IsValid == false)
+                throw new Exception("Invalid topic information");
+
+            Topic topicToDelete = await GetTopicWithAccessVerification(topic.Id);
+            await repository.DeleteTopicAsync(topicToDelete);
+            return RedirectToAction(nameof(Index), new { id = topicToDelete.ForumId });
+        }
+
+        private async Task<Topic> GetTopicWithAccessVerification(int topicId)
+        {
+            Task<Topic> topicTask = repository.GetTopicAsync(topicId);
+            Task<User> userTask = repository.GetUserByNameAsync(User.Identity.Name);
+            await Task.WhenAll(new Task[] { topicTask, userTask });
+            Topic topic = topicTask.Result;
+            User user = userTask.Result;
+            if ((topic.OwnerId == user.Id) == false || User.IsInRole(Roles.Administrator) == false)
+                throw new Exception("Access denied");
+            return topic;
         }
     }
 }

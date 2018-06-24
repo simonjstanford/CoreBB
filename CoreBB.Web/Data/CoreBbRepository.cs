@@ -120,5 +120,16 @@ namespace CoreBB.Web.Data
 
             return topic;
         }
+
+        public async Task DeleteTopicAsync(Topic topicToDelete)
+        {
+            context.Topic.Remove(topicToDelete);
+            if (topicToDelete.RootTopicId == topicToDelete.Id)
+            {
+                var children = await context.Topic.Where(x => x.RootTopicId == topicToDelete.Id).ToListAsync();
+                context.Topic.RemoveRange(children);
+            }
+            await context.SaveChangesAsync();
+        }
     }
 }

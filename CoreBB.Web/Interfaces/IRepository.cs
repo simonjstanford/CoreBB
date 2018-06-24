@@ -24,5 +24,6 @@ namespace CoreBB.Web.Interfaces
         Task AddTopicAsync(Topic topic);
         Task SaveTopicAsync(Topic topic);
         Task<Topic> GetTopicAsync(int topicId);
+        Task DeleteTopicAsync(Topic topicToDelete);
     }
 }

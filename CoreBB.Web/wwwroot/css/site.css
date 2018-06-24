@@ -5,3 +5,7 @@
 .bb-list {
     margin-top: 60px;
 }
+
+textarea {
+    min-height:120px;
+}
