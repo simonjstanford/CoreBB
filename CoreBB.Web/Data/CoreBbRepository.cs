@@ -131,5 +131,45 @@ namespace CoreBB.Web.Data
             }
             await context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Message>> GetMessagesAsync(int userId)
+        {
+            return await context.Message.Include(x => x.ToUser)
+                                        .Include(x => x.FromUser)
+                                        .Where(m => m.ToUserId == userId || m.FromUserId == userId)
+                                        .ToListAsync();
+        }
+
+        public async Task AddMessageAsync(Message message)
+        {
+            await context.Message.AddAsync(message);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task<Message> GetMessageAsync(int messageId)
+        {
+            Message message =  await context.Message.Include(x => x.ToUser)
+                                            .Include(x => x.FromUser)
+                                            .SingleOrDefaultAsync(m => m.Id == messageId);
+
+            if (message == null)
+            {
+                throw new Exception("Message does not exist.");
+            }
+
+            return message;
+        }
+
+        public async Task SaveMessageAsync(Message message)
+        {
+            context.Message.Update(message);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task DeleteMessageAsync(Message message)
+        {
+            context.Message.Remove(message);
+            await context.SaveChangesAsync();
+        }
     }
 }

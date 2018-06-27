@@ -19,11 +19,16 @@ namespace CoreBB.Web.Interfaces
         Task AddForum(Forum forum);
         Task<Forum> GetForumAsync(int forumId);
         Task<ICollection<Topic>> GetTopicsAsync(int forumId);
+        Task<IEnumerable<Message>> GetMessagesAsync(int messageId);
         Task DeleteForumAsync(Forum forumToDelete);
         Task SaveForumAsync(Forum forum);
         Task AddTopicAsync(Topic topic);
         Task SaveTopicAsync(Topic topic);
         Task<Topic> GetTopicAsync(int topicId);
         Task DeleteTopicAsync(Topic topicToDelete);
+        Task AddMessageAsync(Message message);
+        Task<Message> GetMessageAsync(int id);
+        Task SaveMessageAsync(Message message);
+        Task DeleteMessageAsync(Message message);
     }
 }
