@@ -20,7 +20,7 @@ namespace CoreBB.Web.Data
                     .SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile("appsettings.json");
                 var configuration = builder.Build();
-                optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                optionsBuilder.UseMySql(configuration.GetConnectionString("DefaultConnection"));
             }
         }
 

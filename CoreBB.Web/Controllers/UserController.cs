@@ -58,7 +58,7 @@ namespace CoreBB.Web.Controllers
         }
 
         [AllowAnonymous, HttpPost]
-        public async Task<IActionResult> Login(LogInViewModel model)
+        public async Task<IActionResult> Login(LogInViewModel model, string returnUrl = "")
         {
             if (!ModelState.IsValid)
                 throw new Exception("Invalid user information");
